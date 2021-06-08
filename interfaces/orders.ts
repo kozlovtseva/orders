@@ -20,3 +20,12 @@ export interface IOrdersListItem {
     venue: IVenue;
     guest: IGuest;
 }
+
+export interface IOrdersDateListItem {
+    [key: string]: IOrdersListItem[];
+}
+
+export interface IOrdersGroupedListItem {
+    list: IOrdersListItem[];
+    title: string;
+}

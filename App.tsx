@@ -6,12 +6,9 @@ import AppNavigator from './navigation/AppNavigator';
 import ordersStore from './store/OrdersStore';
 
 export default class App extends React.Component<{}, {}> {
-    componentDidMount() {
-        // ordersStore.init();
-    }
     render() {
         return (
-            <Provider ordersStore={ordersStore}>
+            <Provider orders={ordersStore}>
                 <AppNavigator />
             </Provider>
         );
