@@ -9,7 +9,7 @@ import { ITheme } from '../../../interfaces/theme';
 import { ThemeContext } from '../../../App';
 import OrdersLabel from '../../../components/Label/OrdersLabel';
 
-type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Мои заказы'>;
+type NavigationProps = StackNavigationProp<RootStackParamList, 'Home'>;
 
 interface IProps {
     item: any;
@@ -18,7 +18,7 @@ interface IProps {
 const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
     const theme: ITheme = useContext(ThemeContext);
 
-    const navigation = useNavigation<HomeScreenProp>();
+    const navigation = useNavigation<NavigationProps>();
 
     const getTime = (date: Date): string => {
         let hours = date.getHours();

@@ -7,7 +7,7 @@ import { ITheme } from '../interfaces/theme';
 import { ThemeContext } from '../App';
 
 export type RootStackParamList = {
-    'Мои заказы': undefined;
+    Home: undefined;
     Details: { id: string };
 };
 
@@ -18,15 +18,16 @@ const AppNavigator = (): React.ReactElement => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Мои заказы">
+            <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen
-                    name="Мои заказы"
+                    name="Home"
                     component={HomeScreen}
                     options={{
                         headerStyle: {
                             backgroundColor: theme.colors.primary,
                         },
                         headerTintColor: theme.colors.title,
+                        headerTitle: 'Мои заказы',
                     }}
                 />
                 <Stack.Screen
