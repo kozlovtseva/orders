@@ -1,36 +1,49 @@
-import React, { FC, ReactElement, useEffect } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
+import {
+    ActivityIndicator,
+    FlatList,
+    SectionList,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useTheme } from '@react-navigation/native';
 
-import { RootStackParamList } from '../../navigation/AppNavigator';
-import { IOrdersListItem } from '../../interfaces/orders';
+import { IOrdersGroupedListItem, IOrdersListItem } from '../../interfaces/orders';
 import ordersStore from '../../store/OrdersStore';
-
-type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Мои заказы'>;
+import { OrdersItem } from './components';
 
 interface IStore {
-    list: IOrdersListItem[];
+    list: IOrdersGroupedListItem[];
 }
 interface IProps {
     orders: IStore;
 }
 
 const HomeScreen: FC<IProps> = ({ orders }): ReactElement => {
-    const navigation = useNavigation<HomeScreenProp>();
+    const { colors } = useTheme();
 
     useEffect(() => {
         ordersStore.init();
     }, []);
 
     return (
-        <View>
-            <Text>HomeScreen</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Details', { id: '1' })}>
-                <Text>Details</Text>
-            </TouchableOpacity>
-            {orders.list.length > 0 ? <Text>list</Text> : <ActivityIndicator size="large" />}
+        <View style={{ backgroundColor: colors.primary, flex: 1, padding: 5 }}>
+            {orders.list.length > 0 ? (
+                orders.list.map((group: IOrdersGroupedListItem, index: number) => (
+                    <View key={index}>
+                        <Text>{group.title}</Text>
+                        <FlatList
+                            data={group.data}
+                            renderItem={({ item }) => <OrdersItem item={item} />}
+                            keyExtractor={(item) => item.id.toString()}
+                        />
+                    </View>
+                ))
+            ) : (
+                <ActivityIndicator size="large" color="#ffffff" />
+            )}
         </View>
     );
 };

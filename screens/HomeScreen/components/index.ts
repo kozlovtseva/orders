@@ -1,3 +1,3 @@
-import DetailsScreen from './DetailsScreen';
+import OrdersItem from './OrdersItem';
 
-export { DetailsScreen };
+export { OrdersItem };

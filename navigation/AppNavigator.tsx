@@ -2,8 +2,7 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { HomeScreen } from '../screens';
-import { DetailsScreen } from '../screens/HomeScreen/components';
+import { DetailsScreen, HomeScreen } from '../screens';
 
 export type RootStackParamList = {
     'Мои заказы': undefined;

@@ -1,24 +1,30 @@
-import { action, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 import config from '../api';
 import { IOrdersDateListItem, IOrdersGroupedListItem, IOrdersListItem } from '../interfaces/orders';
 
 class OrdersStore {
-    @observable
-    list: IOrdersListItem[] = [];
+    constructor() {
+        makeObservable(this, {
+            list: observable.shallow,
+            init: action,
+        });
+    }
 
-    @action.bound
+    list: IOrdersGroupedListItem[] = [];
+
     async init() {
         // let response = await fetch(`${config.api}/orders`, {
         //     method: 'GET',
         // });
         // this.list = await response.json();
+
         let newList = [
             {
                 id: 47743,
                 title: '# 47743',
-                creationDate: '2021-06-07T16:04:07.390Z',
-                status: 'NEW',
+                creationDate: '2021-06-09T16:04:07.390Z',
+                status: 'SENT_TO_KITCHEN',
                 address: 'ул. Зеленая, д. 19, кв. 40',
                 courierComment:
                     'Aut eum nulla et doloremque itaque veniam aliquam non occaecati. Omnis dignissimos alias quis aut in aut recusandae harum. In nam quia vero nesciunt totam assumenda.',
@@ -56,7 +62,7 @@ class OrdersStore {
                 id: 47745,
                 title: '# 47745',
                 creationDate: '2021-06-06T16:04:07.390Z',
-                status: 'NEW',
+                status: 'CANCELED',
                 address: 'ул. Зеленая, д. 19, кв. 40',
                 courierComment:
                     'Aut eum nulla et doloremque itaque veniam aliquam non occaecati. Omnis dignissimos alias quis aut in aut recusandae harum. In nam quia vero nesciunt totam assumenda.',
@@ -75,7 +81,7 @@ class OrdersStore {
                 id: 47746,
                 title: '# 47746',
                 creationDate: '2021-06-06T16:04:07.390Z',
-                status: 'NEW',
+                status: 'DONE',
                 address: 'ул. Зеленая, д. 19, кв. 40',
                 courierComment:
                     'Aut eum nulla et doloremque itaque veniam aliquam non occaecati. Omnis dignissimos alias quis aut in aut recusandae harum. In nam quia vero nesciunt totam assumenda.',
@@ -91,9 +97,9 @@ class OrdersStore {
                 },
             },
         ];
-        this.groupList(newList);
-        this.list = newList;
+        this.list = this.groupList(newList).slice();
     }
+
     groupList = (list: any): IOrdersGroupedListItem[] => {
         const groups = list.reduce((groups: IOrdersDateListItem, item: IOrdersListItem) => {
             const date = item.creationDate.split('T')[0];
@@ -107,11 +113,12 @@ class OrdersStore {
         const groupedList = Object.keys(groups).map((date: string) => {
             return {
                 title: this.getDateTitle(new Date(date)),
-                list: groups[date],
+                data: groups[date].slice(),
             };
         });
-        return groupedList;
+        return groupedList.slice();
     };
+
     getDateTitle = (date: Date): string => {
         let title: string = '';
 

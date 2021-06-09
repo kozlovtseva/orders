@@ -24,8 +24,12 @@ export interface IOrdersListItem {
 export interface IOrdersDateListItem {
     [key: string]: IOrdersListItem[];
 }
-
+//
 export interface IOrdersGroupedListItem {
-    list: IOrdersListItem[];
     title: string;
+    data: IOrdersListItem[];
+}
+
+export interface IStatusList {
+    [key: string]: string;
 }
