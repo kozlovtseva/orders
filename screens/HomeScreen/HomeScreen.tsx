@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useContext, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, ScrollView, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 
 import { IOrdersGroupedListItem } from '../../interfaces/orders';
@@ -26,16 +26,22 @@ const HomeScreen: FC<IProps> = ({ orders }): ReactElement => {
     return (
         <View style={{ backgroundColor: theme.colors.primary, flex: 1, padding: 10 }}>
             {orders.list.length > 0 ? (
-                orders.list.map((group: IOrdersGroupedListItem, index: number) => (
-                    <View key={index} style={{ marginBottom: 20 }}>
-                        <GroupTitle title={group.title} />
-                        <FlatList
-                            data={group.data}
-                            renderItem={({ item }) => <OrdersItem item={item} />}
-                            keyExtractor={(item) => item.id.toString()}
-                        />
-                    </View>
-                ))
+                <FlatList
+                    data={orders.list}
+                    renderItem={({ item }) => (
+                        <View style={{ marginTop: 20 }}>
+                            <GroupTitle title={item.title} />
+                            <FlatList
+                                data={item.data}
+                                renderItem={({ item }) => <OrdersItem item={item} />}
+                                keyExtractor={(item) => item.id.toString()}
+                                scrollEnabled={false}
+                            />
+                        </View>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsVerticalScrollIndicator={false}
+                />
             ) : (
                 <ActivityIndicator size="large" color="#ffffff" />
             )}

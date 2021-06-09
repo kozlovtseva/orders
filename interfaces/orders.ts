@@ -31,5 +31,10 @@ export interface IOrdersGroupedListItem {
 }
 
 export interface IStatusList {
-    [key: string]: string;
+    [key: string]: IStatusListItem;
+}
+
+export interface IStatusListItem {
+    name: string;
+    color: string;
 }

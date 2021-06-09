@@ -4,9 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { RootStackParamList } from '../../../navigation/AppNavigator';
-import { IStatusList } from '../../../interfaces/orders';
+import { IStatusList, IStatusListItem } from '../../../interfaces/orders';
 import { ITheme } from '../../../interfaces/theme';
 import { ThemeContext } from '../../../App';
+import OrdersLabel from '../../../components/Label/OrdersLabel';
 
 type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Мои заказы'>;
 
@@ -26,28 +27,55 @@ const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
         return time;
     };
 
-    const getStatus = (status: string): string => {
+    const getStatus = (status: string): IStatusListItem => {
         const statusList: IStatusList = {
-            canceled: 'отменен',
-            done: 'приготовлен',
-            sent_to_kitchen: 'отправлено на кухню',
-            new: 'новый',
+            canceled: {
+                name: 'отменен',
+                color: '#EF6366',
+            },
+            done: {
+                name: 'приготовлен',
+                color: '#23DCAD',
+            },
+            sent_to_kitchen: {
+                name: 'отправлено на кухню',
+                color: '#FDA53C',
+            },
+            new: {
+                name: 'новый',
+                color: '#E173D6',
+            },
         };
-        return statusList[status.toLowerCase()] ? statusList[status.toLowerCase()] : '';
+        return statusList[status.toLowerCase()]
+            ? statusList[status.toLowerCase()]
+            : {
+                  name: '',
+                  color: '',
+              };
     };
-
     return (
         <TouchableOpacity
-            style={[styles.container, { backgroundColor: theme.colors.card }]}
+            style={[
+                styles.container,
+                {
+                    backgroundColor: theme.colors.card,
+                },
+            ]}
             onPress={() => navigation.navigate('Details', { id: '1' })}
         >
-            <Text style={[styles.time, { color: theme.colors.text }]}>
-                {getTime(new Date(item.creationDate))}
-            </Text>
-            <Text style={[styles.title, { color: theme.colors.text }]}>{item.title}</Text>
-            <Text style={[styles.address, { color: theme.colors.lightText }]}>{item.address}</Text>
-
-            <Text>{getStatus(item.status)}</Text>
+            <View style={{ opacity: item.status === 'CANCELED' ? 0.5 : 1 }}>
+                <Text style={[styles.time, { color: theme.colors.text }]}>
+                    {getTime(new Date(item.creationDate))}
+                </Text>
+                <Text style={[styles.title, { color: theme.colors.text }]}>{item.title}</Text>
+                <Text style={[styles.address, { color: theme.colors.lightText }]}>
+                    {item.address}
+                </Text>
+                <OrdersLabel
+                    name={getStatus(item.status).name}
+                    color={getStatus(item.status).color}
+                />
+            </View>
         </TouchableOpacity>
     );
 };
@@ -70,8 +98,8 @@ const styles = StyleSheet.create<Style>({
     time: {
         fontSize: 14,
         position: 'absolute',
-        right: 12,
-        top: 15,
+        right: 0,
+        top: 0,
     },
     title: {
         fontSize: 16,
@@ -80,6 +108,7 @@ const styles = StyleSheet.create<Style>({
     address: {
         fontSize: 14,
         fontWeight: '400',
+        marginVertical: 5,
     },
 });
 

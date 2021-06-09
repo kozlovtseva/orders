@@ -96,6 +96,44 @@ class OrdersStore {
                     phone: '(955)180-52-59',
                 },
             },
+            {
+                id: 47756,
+                title: '# 47756',
+                creationDate: '2021-06-06T16:04:07.390Z',
+                status: 'DONE',
+                address: 'ул. Зеленая, д. 19, кв. 40',
+                courierComment:
+                    'Aut eum nulla et doloremque itaque veniam aliquam non occaecati. Omnis dignissimos alias quis aut in aut recusandae harum. In nam quia vero nesciunt totam assumenda.',
+                venue: {
+                    id: 41,
+                    title: 'Кафе «Streamlined scalable database»',
+                },
+                guest: {
+                    id: 51,
+                    firstName: 'Анжелика',
+                    lastName: 'Горшкова',
+                    phone: '(955)180-52-59',
+                },
+            },
+            {
+                id: 47766,
+                title: '# 47766',
+                creationDate: '2021-06-06T16:04:07.390Z',
+                status: 'DONE',
+                address: 'ул. Зеленая, д. 19, кв. 40',
+                courierComment:
+                    'Aut eum nulla et doloremque itaque veniam aliquam non occaecati. Omnis dignissimos alias quis aut in aut recusandae harum. In nam quia vero nesciunt totam assumenda.',
+                venue: {
+                    id: 41,
+                    title: 'Кафе «Streamlined scalable database»',
+                },
+                guest: {
+                    id: 51,
+                    firstName: 'Анжелика',
+                    lastName: 'Горшкова',
+                    phone: '(955)180-52-59',
+                },
+            },
         ];
         this.list = this.groupList(newList).slice();
     }
