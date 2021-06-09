@@ -1,12 +1,13 @@
-import React, { FC, ReactElement, useEffect } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import React, { FC, ReactElement, useContext, useEffect } from 'react';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { useTheme } from '@react-navigation/native';
 
 import { IOrdersGroupedListItem } from '../../interfaces/orders';
 import ordersStore from '../../store/OrdersStore';
 import { OrdersItem } from './components';
 import GroupTitle from '../../components/Title/GroupTitle';
+import { ITheme } from '../../interfaces/theme';
+import { ThemeContext } from '../../App';
 
 interface IStore {
     list: IOrdersGroupedListItem[];
@@ -16,14 +17,14 @@ interface IProps {
 }
 
 const HomeScreen: FC<IProps> = ({ orders }): ReactElement => {
-    const { colors } = useTheme();
+    const theme: ITheme = useContext(ThemeContext);
 
     useEffect(() => {
         ordersStore.init();
     }, []);
 
     return (
-        <View style={{ backgroundColor: colors.primary, flex: 1, padding: 5 }}>
+        <View style={{ backgroundColor: theme.colors.primary, flex: 1, padding: 10 }}>
             {orders.list.length > 0 ? (
                 orders.list.map((group: IOrdersGroupedListItem, index: number) => (
                     <View key={index} style={{ marginBottom: 20 }}>

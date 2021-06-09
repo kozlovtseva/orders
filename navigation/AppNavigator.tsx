@@ -1,8 +1,10 @@
-import React from 'react';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { DetailsScreen, HomeScreen } from '../screens';
+import { ITheme } from '../interfaces/theme';
+import { ThemeContext } from '../App';
 
 export type RootStackParamList = {
     'Мои заказы': undefined;
@@ -11,27 +13,20 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const Theme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        primary: '#006FC3',
-        text: '#ffffff',
-    },
-};
-
 const AppNavigator = (): React.ReactElement => {
+    const theme: ITheme = useContext(ThemeContext);
+
     return (
-        <NavigationContainer theme={Theme}>
+        <NavigationContainer>
             <Stack.Navigator initialRouteName="Мои заказы">
                 <Stack.Screen
                     name="Мои заказы"
                     component={HomeScreen}
                     options={{
                         headerStyle: {
-                            backgroundColor: Theme.colors.primary,
+                            backgroundColor: theme.colors.primary,
                         },
-                        headerTintColor: Theme.colors.text,
+                        headerTintColor: theme.colors.title,
                     }}
                 />
                 <Stack.Screen
@@ -39,9 +34,9 @@ const AppNavigator = (): React.ReactElement => {
                     component={DetailsScreen}
                     options={{
                         headerStyle: {
-                            backgroundColor: Theme.colors.primary,
+                            backgroundColor: theme.colors.primary,
                         },
-                        headerTintColor: Theme.colors.text,
+                        headerTintColor: theme.colors.title,
                     }}
                 />
             </Stack.Navigator>

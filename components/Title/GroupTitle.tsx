@@ -1,18 +1,23 @@
-import React, { FC, ReactElement } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import React, { FC, ReactElement, useContext } from 'react';
+import { StyleSheet, Text, TextStyle } from 'react-native';
+import { ThemeContext } from '../../App';
+import { ITheme } from '../../interfaces/theme';
 
 interface IProps {
     title: string;
 }
 
 const GroupTitle: FC<IProps> = ({ title }): ReactElement => {
-    const { colors } = useTheme();
+    const theme: ITheme = useContext(ThemeContext);
 
-    return <Text style={[styles.title, { color: colors.text }]}>{title}</Text>;
+    return <Text style={[styles.title, { color: theme.colors.title }]}>{title}</Text>;
 };
 
-const styles = StyleSheet.create({
+type Style = {
+    title: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
     title: {
         fontSize: 14,
     },
