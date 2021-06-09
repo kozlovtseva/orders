@@ -28,7 +28,7 @@ const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
 
     const getStatus = (status: string): string => {
         const statusList: IStatusList = {
-            cancel: 'отменен',
+            canceled: 'отменен',
             done: 'приготовлен',
             sent_to_kitchen: 'отправлено на кухню',
             new: 'новый',
