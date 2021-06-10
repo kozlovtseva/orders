@@ -1,9 +1,5 @@
 export const getDateWithMonthName = (date: Date): string => {
     let title: string = '';
-
-    let today = new Date();
-    let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-
     const monthNames = [
         'января',
         'февраля',
@@ -18,14 +14,12 @@ export const getDateWithMonthName = (date: Date): string => {
         'ноября',
         'декабря',
     ];
-
-    if (date.toDateString() === today.toDateString()) {
-        title = 'Сегодня';
-    } else if (date.toDateString() === yesterday.toDateString()) {
-        title = 'Вчера';
-    } else {
-        title = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-    }
-
+    title = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     return title;
+};
+
+export const getTime = (date: Date): string => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
 };

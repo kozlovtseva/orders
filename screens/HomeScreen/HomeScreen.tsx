@@ -3,15 +3,12 @@ import { ActivityIndicator, FlatList, SafeAreaView, ScrollView, View } from 'rea
 import { inject, observer } from 'mobx-react';
 
 import { IOrdersGroupedListItem } from '../../interfaces/orders';
-import ordersStore from '../../store/OrdersStore';
+import ordersStore, { IStore } from '../../store/OrdersStore';
 import { OrdersItem } from './components';
 import GroupTitle from '../../components/Title/GroupTitle';
 import { ITheme } from '../../interfaces/theme';
 import { ThemeContext } from '../../App';
 
-interface IStore {
-    list: IOrdersGroupedListItem[];
-}
 interface IProps {
     orders: IStore;
 }
@@ -25,9 +22,9 @@ const HomeScreen: FC<IProps> = ({ orders }): ReactElement => {
 
     return (
         <View style={{ backgroundColor: theme.colors.primary, flex: 1, padding: 10 }}>
-            {orders.list.length > 0 ? (
+            {orders.groupedList.length > 0 ? (
                 <FlatList
-                    data={orders.list}
+                    data={orders.groupedList}
                     renderItem={({ item }) => (
                         <View style={{ marginTop: 20 }}>
                             <GroupTitle title={item.title} />

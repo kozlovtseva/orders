@@ -2,16 +2,24 @@ import { action, computed, makeObservable, observable } from 'mobx';
 
 import config from '../api';
 import { IOrdersDateListItem, IOrdersGroupedListItem, IOrdersListItem } from '../interfaces/orders';
+import { getDateWithMonthName } from '../utils/date';
+
+export interface IStore {
+    groupedList: IOrdersGroupedListItem[];
+    list: IOrdersListItem[];
+}
 
 class OrdersStore {
     constructor() {
         makeObservable(this, {
-            list: observable.shallow,
+            list: observable,
+            groupedList: observable,
             init: action,
         });
     }
 
-    list: IOrdersGroupedListItem[] = [];
+    list: IOrdersListItem[] = [];
+    groupedList: IOrdersGroupedListItem[] = [];
 
     async init() {
         // let response = await fetch(`${config.api}/orders`, {
@@ -135,7 +143,8 @@ class OrdersStore {
                 },
             },
         ];
-        this.list = this.groupList(newList).slice();
+        this.list = newList;
+        this.groupedList = this.groupList(newList);
     }
 
     groupList = (list: any): IOrdersGroupedListItem[] => {
@@ -150,40 +159,24 @@ class OrdersStore {
 
         const groupedList = Object.keys(groups).map((date: string) => {
             return {
-                title: this.getDateTitle(new Date(date)),
-                data: groups[date].slice(),
+                title: this.getTitle(new Date(date)),
+                data: groups[date],
             };
         });
-        return groupedList.slice();
+
+        return groupedList;
     };
-
-    getDateTitle = (date: Date): string => {
-        let title: string = '';
-
+    getTitle = (date: Date): string => {
+        let title = '';
         let today = new Date();
         let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-
-        const monthNames = [
-            'января',
-            'февраля',
-            'марта',
-            'апреля',
-            'мая',
-            'июня',
-            'июля',
-            'августа',
-            'сентября',
-            'октября',
-            'ноября',
-            'декабря',
-        ];
 
         if (date.toDateString() === today.toDateString()) {
             title = 'Сегодня';
         } else if (date.toDateString() === yesterday.toDateString()) {
             title = 'Вчера';
         } else {
-            title = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+            title = getDateWithMonthName(date);
         }
 
         return title;

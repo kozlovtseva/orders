@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { Provider } from 'mobx-react';
 
-import { theme } from './theme';
+import { theme } from './theme/theme';
 import AppNavigator from './navigation/AppNavigator';
 import ordersStore from './store/OrdersStore';
 

@@ -4,15 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { RootStackParamList } from '../../../navigation/AppNavigator';
-import { IStatusList, IStatusListItem } from '../../../interfaces/orders';
+import { IOrdersListItem, IStatusList, IStatusListItem } from '../../../interfaces/orders';
 import { ITheme } from '../../../interfaces/theme';
 import { ThemeContext } from '../../../App';
 import OrdersLabel from '../../../components/Label/OrdersLabel';
+import { getTime } from '../../../utils/date';
 
 type NavigationProps = StackNavigationProp<RootStackParamList, 'Home'>;
 
 interface IProps {
-    item: any;
+    item: IOrdersListItem;
 }
 
 const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
@@ -20,39 +21,6 @@ const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
 
     const navigation = useNavigation<NavigationProps>();
 
-    const getTime = (date: Date): string => {
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let time = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-        return time;
-    };
-
-    const getStatus = (status: string): IStatusListItem => {
-        const statusList: IStatusList = {
-            canceled: {
-                name: 'отменен',
-                color: '#EF6366',
-            },
-            done: {
-                name: 'приготовлен',
-                color: '#23DCAD',
-            },
-            sent_to_kitchen: {
-                name: 'отправлено на кухню',
-                color: '#FDA53C',
-            },
-            new: {
-                name: 'новый',
-                color: '#E173D6',
-            },
-        };
-        return statusList[status.toLowerCase()]
-            ? statusList[status.toLowerCase()]
-            : {
-                  name: '',
-                  color: '',
-              };
-    };
     return (
         <TouchableOpacity
             style={[
@@ -61,7 +29,7 @@ const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
                     backgroundColor: theme.colors.card,
                 },
             ]}
-            onPress={() => navigation.navigate('Details', { id: '1' })}
+            onPress={() => navigation.navigate('Details', { id: item.id })}
         >
             <View style={{ opacity: item.status === 'CANCELED' ? 0.5 : 1 }}>
                 <Text style={[styles.time, { color: theme.colors.text }]}>
@@ -71,10 +39,7 @@ const OrdersItem: FC<IProps> = ({ item }): ReactElement => {
                 <Text style={[styles.address, { color: theme.colors.lightText }]}>
                     {item.address}
                 </Text>
-                <OrdersLabel
-                    name={getStatus(item.status).name}
-                    color={getStatus(item.status).color}
-                />
+                <OrdersLabel status={item.status} />
             </View>
         </TouchableOpacity>
     );

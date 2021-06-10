@@ -8,7 +8,7 @@ import { ThemeContext } from '../App';
 
 export type RootStackParamList = {
     Home: undefined;
-    Details: { id: string };
+    Details: { id: number };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
