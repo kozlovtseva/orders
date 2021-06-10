@@ -1,8 +1,7 @@
 import React, { FC, ReactElement, useContext, useEffect } from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, ScrollView, View } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 
-import { IOrdersGroupedListItem } from '../../interfaces/orders';
 import ordersStore, { IStore } from '../../store/OrdersStore';
 import { OrdersItem } from './components';
 import GroupTitle from '../../components/Title/GroupTitle';
